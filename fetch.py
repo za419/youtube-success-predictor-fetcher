@@ -48,8 +48,22 @@ def youtube_search(options):
   channelObjects = []
   for i in range(len(channels)):
     channelObjects.append(youtube.channels().list(
-    part="snippet,statistics,topicDetails,brandingSettings,invideoPromotion",
-    id=channels[i]).execute()["items"][0])
+      part="snippet,contentDetails,statistics,topicDetails,brandingSettings,invideoPromotion",
+      id=channels[i]
+    ).execute()["items"][0])
+
+    channelObjects[i]["videos"]=[]
+    playlist=youtube.playlistItems().list(
+      part="snippet",
+      playlistId=channelObjects[i]["contentDetails"]["relatedPlaylists"]["uploads"],
+      maxResults="50"
+    ).execute()["items"]
+
+    for video in playlist:
+      channelObjects[i]["videos"].append(youtube.videos().list(
+        part="snippet,contentDetails,statistics,topicDetails",
+        id=video["snippet"]["resourceId"]["videoId"]
+      ).execute()["items"][0])
 
   f = open(options.output, 'w')
   output=json.dump(channelObjects, f)
