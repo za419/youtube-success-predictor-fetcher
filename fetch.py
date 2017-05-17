@@ -7,6 +7,8 @@ from oauth2client.tools import argparser
 import codecs
 import sys
 
+import json
+
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
 #   https://cloud.google.com/console
@@ -23,7 +25,8 @@ def youtube_search(options):
   # query term.
   search_response = youtube.search().list(
     q=options.q,
-    part="id,snippet",
+    part="snippet",
+    type="channel",
     maxResults=options.max_results
   ).execute()
 
@@ -31,27 +34,30 @@ def youtube_search(options):
   channels = []
   playlists = []
 
-  # Add each result to the appropriate list, and then display the lists of
-  # matching videos, channels, and playlists.
+
+  # Add each result to the appropriate list
   for search_result in search_response.get("items", []):
     if search_result["id"]["kind"] == "youtube#video":
-      videos.append("%s (%s)" % (search_result["snippet"]["title"],
-                                 search_result["id"]["videoId"]))
+      videos.append("%s" % (search_result["id"]["videoId"]))
     elif search_result["id"]["kind"] == "youtube#channel":
-      channels.append("%s (%s)" % (search_result["snippet"]["title"],
-                                   search_result["id"]["channelId"]))
+      channels.append("%s" % (search_result["id"]["channelId"]))
     elif search_result["id"]["kind"] == "youtube#playlist":
-      playlists.append("%s (%s)" % (search_result["snippet"]["title"],
-                                    search_result["id"]["playlistId"]))
+      playlists.append("%s" % (search_result["id"]["playlistId"]))
 
-  print "Videos:\n", "\n".join(videos), "\n"
-  print "Channels:\n", "\n".join(channels), "\n"
-  print "Playlists:\n", "\n".join(playlists), "\n"
+  # For now, only bother with channels (should be the only data returned anyway)
+  channelObjects = []
+  for i in range(len(channels)):
+    channelObjects.append(youtube.channels().list(
+    part="snippet,statistics,topicDetails,brandingSettings,invideoPromotion",
+    id=channels[i]).execute()["items"][0])
 
+  f = open(options.output, 'w')
+  output=json.dump(channelObjects, f)
 
 if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
   argparser.add_argument("--max-results", help="Max results", default=25)
+  argparser.add_argument("--output", help="Output filename", default="output.json")
   args = argparser.parse_args()
 
   UTF8Writer = codecs.getwriter('utf8')
