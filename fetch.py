@@ -4,6 +4,8 @@ from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.tools import argparser
 
+import codecs
+import sys
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -51,6 +53,9 @@ if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
   argparser.add_argument("--max-results", help="Max results", default=25)
   args = argparser.parse_args()
+
+  UTF8Writer = codecs.getwriter('utf8')
+  sys.stdout = UTF8Writer(sys.stdout)
 
   try:
     youtube_search(args)
