@@ -56,7 +56,7 @@ def youtube_search(options):
     playlist=youtube.playlistItems().list(
       part="snippet",
       playlistId=channelObjects[i]["contentDetails"]["relatedPlaylists"]["uploads"],
-      maxResults="50"
+      maxResults=options.max_results
     ).execute()["items"]
 
     for video in playlist:
