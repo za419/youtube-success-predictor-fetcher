@@ -66,7 +66,7 @@ def youtube_search(options):
       ).execute()["items"][0])
 
   f = open(options.output, 'w')
-  output=json.dump(channelObjects, f, indent=2, separators=(',', ': '))
+  output=json.dump(channelObjects, f, indent=4, separators=(',', ' : '))
 
 if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
