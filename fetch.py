@@ -69,6 +69,8 @@ def youtube_search(options):
   output=json.dumps(channelObjects, f, indent=4, separators=(',', ' : '))
   # Now adjust starting and ending characters for Weka, because Weka is silly
   output='{'+output[1:-1]+'}'
+  # And indents
+  output=output.replace("    ", "\t")
   # Now write to the file
   f.write(output)
 
