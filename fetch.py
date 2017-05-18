@@ -65,7 +65,7 @@ def youtube_search(options):
         id=video["snippet"]["resourceId"]["videoId"]
       ).execute()["items"][0])
 
-  f = open(options.output, 'w')
+  f = codecs.open(options.output, 'w', "utf-8")
   output=json.dumps(channelObjects, f, indent=4, separators=(',', ' : '))
   # Now adjust starting and ending characters for Weka, because Weka is silly
   output='{'+output[1:-1]+'}'
