@@ -142,3 +142,12 @@ between each value in the array of strings.
 
 When the `source` of the attribute is "video", the output will be merged and 
 deduplicated.
+
+## `string`
+
+Attributes of type `string` are strings which are forwarded directly to the output 
+file, and require no additional parameters.
+
+When the `source` of the attribute is "video", the values will be concatenated by 
+commas. Alternatively, a string delimiter can be supplied as the optional 
+"combine" attribute, and it will be used instead.
