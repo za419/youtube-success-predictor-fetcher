@@ -67,3 +67,46 @@ parameters: The always-required `name` and `type`, and the type-specific-argumen
 Note that because `alias` does not use the `source` argument, the `name` given 
 will be written to the output file as-is. `alias` attributes which need to include 
 the video/channel tag therefore need to have it in their `name`.
+
+## `extracted`
+
+Attributes of type `extracted` are those which are processed (more than 
+`stringConcat`) before being written into the output. In particular, they are 
+those where the desired data isn't exactly what is written in the source-file. Two 
+examples of this are data within strings: "THIS IS A VALUE: 'abc' THAT WAS A 
+VALUE", or when the desired output is some metadata of the source-file attribute 
+(for example, the length of the string).
+
+An attibute of type `extracted` has the type-specific-argument `extraction`.
+
+`extraction` is an object in the following format:`
+{
+    "goal" : <type-specifier>,
+    "source" : <source-specifier>,
+    "specifier" : <optional string>
+}`
+
+`goal` is any type-specifier besides `alias`. If `goal` is "extracted", then 
+another `extraction` object must be provided in the current one: this object may 
+**not** have the same `source` as *any* `extraction` object it is contained in (no 
+current `<source-specifier>` is complex enough that this would be of use anyway - 
+If this changes, this requirement will be revisited). The type specifier of `goal` 
+will replace the type specifier of the attibute once extraction is complete. If it 
+is `extracted`, then this process will be repeated (more deeply-nested extractions 
+will be performed later). Otherwise, the attibute will continue processing as the 
+specified type.
+
+A `<source-specifier>` is one of the following:
+
+ - "stringLength"
+ 
+ - "regex"
+ 
+If the source specifier is "stringLength", then `goal` must be `numeric`, and the 
+attibute data in the source-file must be a string. The result will simply be the 
+length (number of characters in) the string.
+
+If the source specifier is "regex", then the attibute data in the source-file must 
+be a string, and the `specifier` parameter of the `extraction` object must be a 
+regular expression to run on the data in the source-file. The result of this 
+operation will be the result of the extraction, casted to the goal datatype.
