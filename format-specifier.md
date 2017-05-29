@@ -132,3 +132,13 @@ attributes, each of which is a decimal describing how many of the values are the
 corresponding label
    - The string " `labels[i]`"  will be appended to the output attribute name of 
 the i^th output attribute.
+
+## `stringConcat`
+
+Attributes of type `stringConcat` concatenate an array of strings in the 
+source-file, and write the result to the output file as type `string`. They must 
+include the type-specific-argument "delimiter", which is a string placed in 
+between each value in the array of strings.
+
+When the `source` of the attribute is "video", the output will be merged and 
+deduplicated.
