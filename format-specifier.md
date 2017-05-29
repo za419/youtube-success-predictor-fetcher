@@ -171,3 +171,25 @@ the result (changes output `type` to "string").
  - "stringifyDedup"
    - Converts each value into a string, deduplicates, then concatenates with 
 commas and writes the result (changes output `type` to "string").
+
+## `datetime`
+
+Attributes of type `datetime` are dates or times ideally under the ISO-8601 
+datetime format. They are read into a Python date object and output as ISO-8601 to 
+ensure compliance with that standard. It is therefore only recommended that they 
+are given as ISO-8601: Any format which can be parsed by the [python-dateutil 
+library](http://labix.org/python-dateutil) is valid.
+
+When the `source` of the attribute is `video`, the average of the values (as 
+performed by averaging UNIX timestamps) will be used. Alternatively, an 
+alternative combiner may be supplied as the optional "combine" attibute, and it 
+will be used instead. Valid combiners are:
+
+ - "average"
+   - Default behavior, writes the average of values.
+ - "stringify"
+   - Converts each value into a string, then concatenates with commas and writes 
+the result (changes output `type` to "string").
+ - "stringifyDedup"
+   - Converts each value into a string, deduplicates, then concatenates with 
+commas and writes the result (changes output `type` to "string").
