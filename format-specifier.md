@@ -54,3 +54,16 @@ specifying a valid offset within the top-level array of `data`, and that for
 videos `j` is an index specifying a valid offset within the array of videos. 
 Attribute data is found by `data[i][subsource][name]` for `source=="channel"`, and 
 by `data[i][videos][j][subsource][name]` for `source=="video"`.
+
+## `alias`
+
+Attributes of type `alias` are special in that they do not use the `source` or 
+`subsource` attributes. An attribute of type `alias` takes on the value of a 
+target attribute, which is not itself written into the output, with the new name 
+specified by `name`. An attribute of type `alias` is specified by three 
+parameters: The always-required `name` and `type`, and the type-specific-argument 
+`target`, where `target` is an attribute object of any type besides `alias`.
+
+Note that because `alias` does not use the `source` argument, the `name` given 
+will be written to the output file as-is. `alias` attributes which need to include 
+the video/channel tag therefore need to have it in their `name`.
