@@ -151,3 +151,23 @@ file, and require no additional parameters.
 When the `source` of the attribute is "video", the values will be concatenated by 
 commas. Alternatively, a string delimiter can be supplied as the optional 
 "combine" attribute, and it will be used instead.
+
+## `numeric`
+
+Attributes of type `numeric` are numbers which are forwarded directly to the 
+output file, and require no additional parameters.
+
+When the `source` of attribute is "video", the average of the values will be 
+written. Alternatively, an alternative combiner can be supplied as the optional 
+"combine" attribute, and it will be used instead. Valid combiners are:
+
+ - "average"
+   - Default behavior, writes the average of values.
+ - "sum"
+   - Writes the sum of values
+ - "stringify"
+   - Converts each value into a string, then concatenates with commas and writes 
+the result (changes output `type` to "string").
+ - "stringifyDedup"
+   - Converts each value into a string, deduplicates, then concatenates with 
+commas and writes the result (changes output `type` to "string").
