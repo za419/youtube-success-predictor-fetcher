@@ -110,3 +110,25 @@ If the source specifier is "regex", then the attibute data in the source-file mu
 be a string, and the `specifier` parameter of the `extraction` object must be a 
 regular expression to run on the data in the source-file. The result of this 
 operation will be the result of the extraction, casted to the goal datatype.
+
+## `nominal` and `boolean`
+
+Attributes of type `nominal` are forwarded directly to the output file. They 
+must include the type-specific-argument "labels", which is an array of strings, 
+each of which is one possible value the attribute may take, and where the attibute 
+may never take a value which is not in `labels`.
+
+The type specifier `boolean` is shorthand for type `nominal` with labels `["true", 
+"false"]`.
+
+When the `source` of the attribute is "video", then the output will be:
+
+ - For binary attributes (when labels only has two values), a decimal describing how 
+many of the values are the first
+   - The string " (`labels[0]`/[`labels[0]+`labels[1]`])" will be appended to the 
+output attibute name.
+ - For non-binary attributes (when labels doesn't have two values), a set of 
+attributes, each of which is a decimal describing how many of the values are the 
+corresponding label
+   - The string " `labels[i]`"  will be appended to the output attribute name of 
+the i^th output attribute.
