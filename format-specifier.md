@@ -125,7 +125,7 @@ When the `source` of the attribute is "video", then the output will be:
 
  - For binary attributes (when labels only has two values), a decimal describing how
 many of the values are the first
-   - The string " (`labels[0]`/[`labels[0]+`labels[1]`])" will be appended to the
+   - The string " (`labels[0]`/[`labels[0]`+`labels[1]`])" will be appended to the
 output attibute name.
  - For non-binary attributes (when labels doesn't have two values), a set of
 attributes, each of which is a decimal describing how many of the values are the
