@@ -55,6 +55,8 @@ videos `j` is an index specifying a valid offset within the array of videos.
 Attribute data is found by `data[i][subsource][name]` for `source=="channel"`, and
 by `data[i][videos][j][subsource][name]` for `source=="video"`.
 
+The specific per-type processing of attributes is as follows:
+
 ## `alias`
 
 Attributes of type `alias` are special in that they do not use the `source` or
@@ -88,7 +90,7 @@ An attibute of type `extracted` has the type-specific-argument `extraction`.
 
 `goal` is any type-specifier besides `alias`. If `goal` is "extracted", then
 another `extraction` object must be provided in the current one: this object may
-**not** have the same `source` as *any* `extraction` object it is contained in (no
+**not** have the same `source` as the `extraction` object it is contained in (no
 current `<source-specifier>` is complex enough that this would be of use anyway -
 If this changes, this requirement will be revisited). The type specifier of `goal`
 will replace the type specifier of the attibute once extraction is complete. If it
@@ -127,11 +129,13 @@ When the `source` of the attribute is "video", then the output will be:
 many of the values are the first
    - The string " (`labels[0]`/[`labels[0]`+`labels[1]`])" will be appended to the
 output attibute name.
+   - The output `type` will be changed to `numeric`.
  - For non-binary attributes (when labels doesn't have two values), a set of
 attributes, each of which is a decimal describing how many of the values are the
 corresponding label
    - The string " `labels[i]`"  will be appended to the output attribute name of
-the i^th output attribute.
+the i<sup>th</sup> output attribute.
+   - The output `type` will be changed to `numeric`.
 
 ## `stringConcat`
 
