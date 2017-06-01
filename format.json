@@ -1,0 +1,178 @@
+[
+    {
+        "name" : "topicIds",
+        "type" : "stringConcat",
+        "delimiter" : ",",
+        "source" : "channel",
+        "subsource" : "topicDetails"
+    },
+    {
+        "name" : "topicCategories",
+        "type" : "stringConcat",
+        "delimiter" : ",",
+        "source" : "channel",
+        "subsource" : "topicDetails"
+    },
+    {
+        "name" : "commentCount",
+        "type" : "numeric",
+        "source" : "channel",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "viewCount",
+        "type" : "numeric",
+        "source" : "channel",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "videoCount",
+        "type" : "numeric",
+        "source" : "channel",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "subscriberCount",
+        "type" : "numeric",
+        "source" : "channel",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "hiddenSubscriberCount",
+        "type" : "boolean",
+        "source" : "channel",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "topicCategories",
+        "type" : "stringConcat",
+        "delimiter" : ",",
+        "source" : "video",
+        "subsource" : "topicDetails"
+    },
+    {
+        "name" : "relevantTopicIds",
+        "type" : "stringConcat",
+        "delimiter" : ",",
+        "source" : "video",
+        "subsource" : "topicDetails"
+    },
+    {
+        "name" : "commentCount",
+        "type" : "numeric",
+        "source" : "video",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "viewCount",
+        "type" : "numeric",
+        "source" : "video",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "favoriteCount",
+        "type" : "numeric",
+        "source" : "video",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "dislikeCount",
+        "type" : "numeric",
+        "source" : "video",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "likeCount",
+        "type" : "numeric",
+        "source" : "video",
+        "subsource" : "statistics"
+    },
+    {
+        "name" : "definition",
+        "type" : "nominal",
+        "labels" : [
+            "sd",
+            "hd"
+        ],
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "projection",
+        "type" : "nominal",
+        "labels" : [
+            "360",
+            "rectangular"
+        ],
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "caption",
+        "type" : "boolean",
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "duration",
+        "type" : "datetime",
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "licensedContent",
+        "type" : "boolean",
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "dimension",
+        "type" : "nominal",
+        "labels" : [
+            "3d",
+            "2d"
+        ],
+        "source" : "video",
+        "subsource" : "contentDetails"
+    },
+    {
+        "name" : "video - titleLength",
+        "type" : "alias",
+        "target" : {
+            "name" : "title",
+            "type" : "extracted",
+            "extraction" : {
+                "goal" : "numeric",
+                "source" : "stringLength"
+            },
+            "source" : "video",
+            "subsource" : "snippet"
+        }
+    },
+    {
+        "name" : "video - descriptionLength",
+        "type" : "alias",
+        "target" : {
+            "name" : "description",
+            "type" : "extracted",
+            "extraction" : {
+                "goal" : "numeric",
+                "source" : "stringLength"
+            },
+            "source" : "video",
+            "subsource" : "snippet"
+        }
+    },
+    {
+        "name" : "publishedAt",
+        "type" : "datetime",
+        "source" : "video",
+        "subsource" : "snippet"
+    },
+    {
+        "name" : "tags",
+        "type" : "stringConcat",
+        "source" : "video",
+        "subsource" : "snippet"
+    }
+]
