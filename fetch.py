@@ -67,9 +67,7 @@ def youtube_search(options):
 
   f = codecs.open(options.output, 'w', "utf-8")
   output=json.dumps(channelObjects, f, indent=4, separators=(',', ' : '))
-  # Now adjust starting and ending characters for Weka, because Weka is silly
-  output='{'+output[1:-1]+'}'
-  # And indents
+  # Change indents to tabs
   output=output.replace("    ", "\t")
   # Now write to the file
   f.write(output)
