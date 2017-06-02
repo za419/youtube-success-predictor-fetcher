@@ -20,6 +20,9 @@ with open('output.json') as json_data:
         header.append("avg_favorite_count")
         header.append("avg_dislike_count")
         header.append("avg_like_count")
+        header.append("sd/hd_ratio")
+        header.append("projection_ratio")
+        header.append("caption")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
@@ -39,7 +42,16 @@ with open('output.json') as json_data:
             favorite_count = 0
             like_count = 0
             dislike_count = 0
+            sd = 0
+            hd = 0
+            _360 = 0
+            rectangular = 0
+            caption_true = 0
+            caption_false = 0
+
+
             for v in sub['videos']: #iterating through videos of channels, max of 25
+
                 try:
                     for l in v['topicDetails']['topicCategories']:
                         v_topicCat.add(l)
@@ -77,6 +89,20 @@ with open('output.json') as json_data:
                 except KeyError:
                     continue
 
+                if v['contentDetails']['definition'] == "hd":
+                    hd += 1
+                elif v['contentDetails']['definition'] == "sd":
+                    sd += 1
+
+                if v['contentDetails']['projection'] == 360:
+                    _360 += 1
+                elif v['contentDetails']['projection'] == "rectangular":
+                    rectangular += 1
+
+                if v['contentDetails']['caption'] == "true":
+                    caption_true += 1
+                elif v['contentDetails']['projection'] == "false":
+                    caption_false += 1
 
             header.append(list(v_topicCat))
             header.append(list(v_rel_topicids))
@@ -85,6 +111,24 @@ with open('output.json') as json_data:
             header.append(float(favorite_count) / len(sub['videos']))
             header.append(float(like_count) / len(sub['videos']))
             header.append(float(dislike_count) / len(sub['videos']))
+
+            try:
+                defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
+                header.append(defn_ratio)
+            except ZeroDivisionError:
+                header.append(0.0)
+
+            try:
+                proj_ratio = round(float(_360) / (rectangular + _360), ndigits=2)
+                header.append(proj_ratio)
+            except ZeroDivisionError:
+                header.append(0.0)
+
+            try:
+                caption_ratio = round(float(caption_true)/(caption_true+caption_false),ndigits=2)
+                header.append(caption_ratio)
+            except ZeroDivisionError:
+                header.append(0.0)
 
             writer.writerow(header)
 
