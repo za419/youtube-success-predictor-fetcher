@@ -16,11 +16,11 @@ with open('output.json') as json_data:
         header.append("hiddenSubscriberCount")
         header.append("video_topic_cats")
         header.append("video_relevant_topic_ids")
-        header.append("avg_view_count")
         header.append("avg_comment_count")
+        header.append("avg_view_count")
         header.append("avg_favorite_count")
-        header.append("avg_dislike_count")
         header.append("avg_like_count")
+        header.append("avg_dislike_count")
         header.append("licensed_content_amount")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
@@ -124,7 +124,7 @@ with open('output.json') as json_data:
 
                 if v['contentDetails']['caption'] == "true":
                     caption_true += 1
-                elif v['contentDetails']['projection'] == "false":
+                elif v['contentDetails']['caption'] == "false":
                     caption_false += 1
                     
                 if v['contentDetails']['licensedContent'] == "true":
