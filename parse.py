@@ -24,8 +24,8 @@ with open('output.json') as json_data:
         header.append("avg_video_duration")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
-        header.append("caption_amount")
-        header.append("licensed_content_amount")
+        header.append("caption_ratio")
+        header.append("licensed_content_ratio")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
