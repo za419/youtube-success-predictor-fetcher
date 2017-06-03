@@ -170,9 +170,9 @@ with open('output.json') as json_data:
                 elif v['contentDetails']['licensedContent'] == "2d":
                     twoD += 1
 
-            header.append(list(v_topicCat))
-            header.append(list(v_rel_topicids))
-            header.append(list(v_tags))
+            header.append("+".join(v_topicCat).encode("ascii", "backslashreplace"))
+            header.append("+".join(v_rel_topicids).encode("ascii", "backslashreplace"))
+            header.append("+".join(v_tags).encode("ascii", "backslashreplace"))
             header.append(float(comment_count)/len(sub['videos']))
             header.append(float(view_count) / len(sub['videos']))
             header.append(float(favorite_count) / len(sub['videos']))
