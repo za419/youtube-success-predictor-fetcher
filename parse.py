@@ -25,6 +25,7 @@ with open('output.json') as json_data:
         header.append("avg_video_duration")
         header.append("avg_title_length")
         header.append("avg_description_length")
+        header.append("avg_posting_time")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
         header.append("caption_ratio")
@@ -63,6 +64,7 @@ with open('output.json') as json_data:
             total_title_length = 0
             total_description_length = 0
             v_tags = Set([])
+            total_posting_offset = datetime.timedelta() # Posting time encoded as seconds after midnight
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
 
@@ -77,7 +79,7 @@ with open('output.json') as json_data:
                         v_rel_topicids.add(l)
                 except KeyError:
                     continue
-                    
+
                 try:
                     for l in v['snippet']['tags']:
                         v_tags.add(l)
@@ -128,6 +130,12 @@ with open('output.json') as json_data:
                     continue
 
                 try:
+                    time=datetime.datetime.strptime(v['snippet']['publishedAt'], "%Y-%m-%dT%H:%M:%S.000Z")
+                    total_posting_offset += (time-datetime.datetime(time.year, time.month, time.day))
+                except KeyError:
+                    continue
+
+                try:
                     total_title_length += len(v['snippet']['title'])
                 except KeyError:
                     continue
@@ -173,6 +181,7 @@ with open('output.json') as json_data:
             header.append((total_duration / len(sub['videos'])).total_seconds())
             header.append(float(total_title_length) / len(sub['videos']))
             header.append(float(total_description_length) / len(sub['videos']))
+            header.append((total_posting_offset / len(sub['videos'])).total_seconds())
 
             try:
                 defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
