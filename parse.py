@@ -161,7 +161,7 @@ with open('output.json') as json_data:
                 
             try:
                 licensed_ratio = round(float(licensed_true) / (licensed_true+licensed_false), ndigits=2)
-                header.append(caption_ratio)
+                header.append(licensed_ratio)
             except ZeroDivisionError:
                 header.append(0.0)
 
