@@ -67,9 +67,7 @@ def youtube_search(options):
 
   f = codecs.open(options.output, 'w', "utf-8")
   output=json.dumps(channelObjects, f, indent=4, separators=(',', ' : '))
-  # Now adjust starting and ending characters for Weka, because Weka is silly
-  output='{'+output[1:-1]+'}'
-  # And indents
+  # Change indents to tabs
   output=output.replace("    ", "\t")
   # Now write to the file
   f.write(output)
@@ -78,7 +76,6 @@ if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
   argparser.add_argument("--max-results", help="Max results", default=25)
   argparser.add_argument("--output", help="Output filename", default="output.json")
-  argparser.add_argument("--format" help="Filename of JSON file describing attributes to output", default="format.json")
   args = argparser.parse_args()
 
   UTF8Writer = codecs.getwriter('utf8')
