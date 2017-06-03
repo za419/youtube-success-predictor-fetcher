@@ -98,7 +98,7 @@ with open('output.json') as json_data:
                     dislike_count += int(v['statistics']['dislikeCount'])
                 except KeyError:
                     continue
-                    
+
                 try:
                     try:
                         time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%MM%SS")
@@ -116,7 +116,7 @@ with open('output.json') as json_data:
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
-                    
+
                 try:
                     total_title_length += len(v['snippet']['title'])
                 except KeyError:
@@ -136,12 +136,12 @@ with open('output.json') as json_data:
                     caption_true += 1
                 elif v['contentDetails']['caption'] == "false":
                     caption_false += 1
-                    
+
                 if v['contentDetails']['licensedContent'] == "true":
                     licensed_true += 1
                 elif v['contentDetails']['licensedContent'] == "false":
                     licensed_true += 1
-                    
+
                 if v['contentDetails']['licensedContent'] == "3d":
                     threeD += 1
                 elif v['contentDetails']['licensedContent'] == "2d":
@@ -174,13 +174,13 @@ with open('output.json') as json_data:
                 header.append(caption_ratio)
             except ZeroDivisionError:
                 header.append(0.0)
-                
+
             try:
                 licensed_ratio = round(float(licensed_true) / (licensed_true+licensed_false), ndigits=2)
                 header.append(licensed_ratio)
             except ZeroDivisionError:
                 header.append(0.0)
-                
+
             try:
                 dimension_ratio = round(float(threeD) / (threeD+twoD), ndigits=2)
                 header.append(dimension_ratio)
