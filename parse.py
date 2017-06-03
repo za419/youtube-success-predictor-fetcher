@@ -21,11 +21,11 @@ with open('output.json') as json_data:
         header.append("avg_favorite_count")
         header.append("avg_dislike_count")
         header.append("avg_like_count")
+        header.append("licensed_content_amount")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
         header.append("caption_amount")
         header.append("avg_video_duration")
-        header.append("licensed_content_amount")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
