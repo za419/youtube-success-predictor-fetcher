@@ -23,7 +23,7 @@ with open('output.json') as json_data:
         header.append("avg_like_count")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
-        header.append("caption")
+        header.append("caption_amount")
         header.append("avg_video_duration")
         writer.writerow(header) #attribute names
 
