@@ -26,6 +26,7 @@ with open('output.json') as json_data:
         header.append("projection_ratio")
         header.append("caption_ratio")
         header.append("licensed_content_ratio")
+        header.append("3d/2d_ratio")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
@@ -54,6 +55,8 @@ with open('output.json') as json_data:
             total_duration = datetime.timedelta();
             licensed_true = 0
             licensed_false = 0
+            threeD = 0
+            twoD = 0
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
 
@@ -131,6 +134,11 @@ with open('output.json') as json_data:
                     licensed_true += 1
                 elif v['contentDetails']['licensedContent'] == "false":
                     licensed_true += 1
+                    
+                if v['contentDetails']['licensedContent'] == "3d":
+                    threeD += 1
+                elif v['contentDetails']['licensedContent'] == "2d":
+                    twoD += 1
 
             header.append(list(v_topicCat))
             header.append(list(v_rel_topicids))
@@ -162,6 +170,12 @@ with open('output.json') as json_data:
             try:
                 licensed_ratio = round(float(licensed_true) / (licensed_true+licensed_false), ndigits=2)
                 header.append(licensed_ratio)
+            except ZeroDivisionError:
+                header.append(0.0)
+                
+            try:
+                dimension_ratio = round(float(threeD) / (threeD+twoD), ndigits=2)
+                header.append(dimension_ratio)
             except ZeroDivisionError:
                 header.append(0.0)
 
