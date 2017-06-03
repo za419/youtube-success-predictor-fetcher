@@ -22,6 +22,7 @@ with open('output.json') as json_data:
         header.append("avg_like_count")
         header.append("avg_dislike_count")
         header.append("avg_video_duration")
+        header.append("avg_title_length")
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
         header.append("caption_ratio")
@@ -57,6 +58,7 @@ with open('output.json') as json_data:
             licensed_false = 0
             threeD = 0
             twoD = 0
+            total_title_length = 0
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
 
@@ -114,6 +116,11 @@ with open('output.json') as json_data:
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
+                    
+                try:
+                    total_title_length += len(v['snippet']['title'])
+                except KeyError:
+                    continue
 
                 if v['contentDetails']['definition'] == "hd":
                     hd += 1
@@ -148,6 +155,7 @@ with open('output.json') as json_data:
             header.append(float(like_count) / len(sub['videos']))
             header.append(float(dislike_count) / len(sub['videos']))
             header.append((total_duration / len(sub['videos'])).total_seconds())
+            header.append(float(total_title_length) / len(sub['videos']))
 
             try:
                 defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
