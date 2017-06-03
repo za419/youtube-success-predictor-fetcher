@@ -25,6 +25,7 @@ with open('output.json') as json_data:
         header.append("projection_ratio")
         header.append("caption_amount")
         header.append("avg_video_duration")
+        header.append("licensed_content_amount")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
@@ -51,7 +52,8 @@ with open('output.json') as json_data:
             caption_true = 0
             caption_false = 0
             total_duration = datetime.timedelta();
-
+            licensed_true = 0
+            licensed_false = 0
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
 
@@ -124,6 +126,11 @@ with open('output.json') as json_data:
                     caption_true += 1
                 elif v['contentDetails']['projection'] == "false":
                     caption_false += 1
+                    
+                if v['contentDetails']['licensedContent'] == "true":
+                    licensed_true += 1
+                elif v['contentDetails']['licensedContent'] == "false":
+                    licensed_true += 1
 
             header.append(list(v_topicCat))
             header.append(list(v_rel_topicids))
@@ -148,6 +155,12 @@ with open('output.json') as json_data:
 
             try:
                 caption_ratio = round(float(caption_true)/(caption_true+caption_false),ndigits=2)
+                header.append(caption_ratio)
+            except ZeroDivisionError:
+                header.append(0.0)
+                
+            try:
+                licensed_ratio = round(float(licensed_true) / (licensed_true+licensed_false), ndigits=2)
                 header.append(caption_ratio)
             except ZeroDivisionError:
                 header.append(0.0)
