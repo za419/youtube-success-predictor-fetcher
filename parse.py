@@ -16,6 +16,7 @@ with open('output.json') as json_data:
         header.append("hiddenSubscriberCount")
         header.append("video_topic_cats")
         header.append("video_relevant_topic_ids")
+        header.append("video_tags")
         header.append("avg_comment_count")
         header.append("avg_view_count")
         header.append("avg_favorite_count")
@@ -61,6 +62,7 @@ with open('output.json') as json_data:
             twoD = 0
             total_title_length = 0
             total_description_length = 0
+            v_tags = Set([])
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
 
@@ -73,6 +75,12 @@ with open('output.json') as json_data:
                 try:
                     for l in v['topicDetails']['relevantTopicIds']:
                         v_rel_topicids.add(l)
+                except KeyError:
+                    continue
+                    
+                try:
+                    for l in v['snippet']['tags']:
+                        v_tags.add(l)
                 except KeyError:
                     continue
 
@@ -156,6 +164,7 @@ with open('output.json') as json_data:
 
             header.append(list(v_topicCat))
             header.append(list(v_rel_topicids))
+            header.append(list(v_tags))
             header.append(float(comment_count)/len(sub['videos']))
             header.append(float(view_count) / len(sub['videos']))
             header.append(float(favorite_count) / len(sub['videos']))
