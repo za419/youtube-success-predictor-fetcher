@@ -1,4 +1,5 @@
 import json, csv
+import datetime
 from sets import Set
 
 with open('output.json') as json_data:
@@ -23,6 +24,7 @@ with open('output.json') as json_data:
         header.append("sd/hd_ratio")
         header.append("projection_ratio")
         header.append("caption")
+        header.append("avg_video_duration")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
@@ -48,6 +50,7 @@ with open('output.json') as json_data:
             rectangular = 0
             caption_true = 0
             caption_false = 0
+            total_duration = datetime.timedelta();
 
 
             for v in sub['videos']: #iterating through videos of channels, max of 25
@@ -88,6 +91,24 @@ with open('output.json') as json_data:
                     dislike_count += int(v['statistics']['dislikeCount'])
                 except KeyError:
                     continue
+                    
+                try:
+                    try:
+                        time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%MM%SS")
+                    except ValueError:
+                        try:
+                            time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%MM%SS")
+                        except ValueError:
+                            try:
+                                time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%MM")
+                            except ValueError:
+                                try:
+                                    time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%SS")
+                                except ValueError:
+                                    time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
+                    total_duration += (time-datetime.datetime(time.year, time.month, time.day))
+                except KeyError:
+                    continue
 
                 if v['contentDetails']['definition'] == "hd":
                     hd += 1
@@ -111,6 +132,7 @@ with open('output.json') as json_data:
             header.append(float(favorite_count) / len(sub['videos']))
             header.append(float(like_count) / len(sub['videos']))
             header.append(float(dislike_count) / len(sub['videos']))
+            header.append((total_duration / len(sub['videos'])).total_seconds())
 
             try:
                 defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
