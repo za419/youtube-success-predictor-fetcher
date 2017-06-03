@@ -5,7 +5,7 @@ from sets import Set
 with open('output.json') as json_data:
     d = json.load(json_data, strict=False)
     with open('data.csv', 'wb') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
         header = []
         header.append("topicIds")
         header.append("topicCategories")
