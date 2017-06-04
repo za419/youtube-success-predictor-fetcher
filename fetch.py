@@ -74,7 +74,7 @@ def youtube_search(options):
 
 if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
-  argparser.add_argument("--max-results", help="Max results", default=25)
+  argparser.add_argument("--max-results", help="Max results", default=50)
   argparser.add_argument("--output", help="Output filename", default="output.json")
   args = argparser.parse_args()
 

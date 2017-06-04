@@ -31,6 +31,7 @@ with open('output.json') as json_data:
         header.append("caption_ratio")
         header.append("licensed_content_ratio")
         header.append("3d/2d_ratio")
+        header.append("success")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
@@ -124,7 +125,19 @@ with open('output.json') as json_data:
                                 try:
                                     time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%SS")
                                 except ValueError:
-                                    time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
+                                    try:
+                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT1H10M")
+                                    except ValueError:
+                                        try:
+                                            time = datetime.datetime.strptime(v['contentDetails']['duration'],
+                                                                              "PT1H31M")
+                                        except ValueError:
+                                            try:
+                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
+                                                                                  "PT1H2M")
+                                            except ValueError:
+                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
+                                                                                  "PT%HH%SS")
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
@@ -213,13 +226,18 @@ with open('output.json') as json_data:
             except ZeroDivisionError:
                 header.append(0.0)
 
+
+            if int(sub['statistics']['subscriberCount']) >= 100000:
+                header.append("yes")
+            else:
+                header.append("no")
             writer.writerow(header)
 
 
 
-#just checks to make sure all instances have same number of attributes
-with open('data.csv', 'rb') as csvfile:
-    reader = csv.reader(csvfile, delimiter =',')
-    for row in reader:
-        print len(row)
-
+# #just checks to make sure all instances have same number of attributes
+# with open('data.csv', 'rb') as csvfile:
+#     reader = csv.reader(csvfile, delimiter =',')
+#     for row in reader:
+#         print len(row)
+#
