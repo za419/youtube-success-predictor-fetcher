@@ -126,15 +126,15 @@ with open('output.json') as json_data:
                                     time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%SS")
                                 except ValueError:
                                     try:
-                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT1H10M")
+                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%MM")
                                     except ValueError:
                                         try:
                                             time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                              "PT1H31M")
+                                                                              "PT%HH%MM")
                                         except ValueError:
                                             try:
                                                 time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                  "PT1H2M")
+                                                                                  "PT%HH%MM")
                                             except ValueError:
                                                 time = datetime.datetime.strptime(v['contentDetails']['duration'],
                                                                                   "PT%HH%SS")
