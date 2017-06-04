@@ -128,16 +128,7 @@ with open('output.json') as json_data:
                                     try:
                                         time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%MM")
                                     except ValueError:
-                                        try:
-                                            time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                              "PT%HH%MM")
-                                        except ValueError:
-                                            try:
-                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                  "PT%HH%MM")
-                                            except ValueError:
-                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                  "PT%HH%SS")
+                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
