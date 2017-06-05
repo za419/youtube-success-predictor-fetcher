@@ -4,7 +4,7 @@ from sets import Set
 
 with open('output.json') as json_data:
     d = json.load(json_data, strict=False)
-    with open('data.csv', 'wb') as csvfile:
+    with open('data2.csv', 'wb') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
         header = []
         header.append("topicIds")
@@ -303,7 +303,7 @@ with open('output.json') as json_data:
                 header.append(0.0)
 
 
-            if int(sub['statistics']['subscriberCount']) >= 500000:
+            if int(sub['statistics']['subscriberCount']) >= 300000:
                 header.append("yes")
             else:
                 header.append("no")
@@ -311,7 +311,7 @@ with open('output.json') as json_data:
 
 
 
-# #count checker
+#count checker
 # count = 0
 # check = True
 # with open('data.csv', 'rb') as csvfile:
@@ -320,7 +320,7 @@ with open('output.json') as json_data:
 #         if check:
 #             check = False
 #             continue
-#         if float(row[5]) >= 500000:
+#         if float(row[5]) >= 300000:
 #             count += 1
 #
-# #print count
+# print count
