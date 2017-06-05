@@ -36,8 +36,18 @@ with open('output.json') as json_data:
 
         for sub in d: #iterating through channels
             header = []
-            header.append(sub['topicDetails']['topicIds'])
-            header.append(sub['topicDetails']['topicCategories'])
+
+
+            try:
+                header.append(sub['topicDetails']['topicIds'])
+            except KeyError:
+                header.append("none")
+
+            try:
+                header.append(sub['topicDetails']['topicCategories'])
+            except KeyError:
+                header.append("none")
+            #header.append(sub['topicDetails']['topicCategories'])
             header.append(sub['statistics']['commentCount'])
             header.append(sub['statistics']['viewCount'])
             header.append(sub['statistics']['videoCount'])
@@ -136,8 +146,60 @@ with open('output.json') as json_data:
                                                 time = datetime.datetime.strptime(v['contentDetails']['duration'],
                                                                                   "PT1H2M")
                                             except ValueError:
-                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                  "PT%HH%SS")
+                                                try:
+                                                    time = datetime.datetime.strptime(v['contentDetails']['duration'],
+                                                                                      "PT1H34M")
+                                                except ValueError:
+                                                    try:
+                                                        time = datetime.datetime.strptime(
+                                                            v['contentDetails']['duration'],
+                                                            "PT1H22M")
+                                                    except ValueError:
+                                                        try:
+                                                            time = datetime.datetime.strptime(
+                                                                v['contentDetails']['duration'],
+                                                                "PT2H7M")
+                                                        except ValueError:
+                                                            try:
+                                                                time = datetime.datetime.strptime(
+                                                                    v['contentDetails']['duration'],
+                                                                    "PT5H14M")
+                                                            except ValueError:
+                                                                try:
+                                                                    time = datetime.datetime.strptime(
+                                                                        v['contentDetails']['duration'],
+                                                                        "PT2H12M")
+                                                                except ValueError:
+                                                                    try:
+                                                                        time = datetime.datetime.strptime(
+                                                                            v['contentDetails']['duration'],
+                                                                            "PT4H24M")
+                                                                    except ValueError:
+                                                                        try:
+                                                                            time = datetime.datetime.strptime(
+                                                                                v['contentDetails']['duration'],
+                                                                                "PT2H")
+                                                                        except ValueError:
+                                                                            try:
+                                                                                time = datetime.datetime.strptime(
+                                                                                    v['contentDetails']['duration'],
+                                                                                    "PT4H")
+                                                                            except ValueError:
+                                                                                try:
+                                                                                    time = datetime.datetime.strptime(
+                                                                                        v['contentDetails']['duration'],
+                                                                                        "PT3H8M")
+                                                                                except ValueError:
+                                                                                    try:
+                                                                                        time = datetime.datetime.strptime(
+                                                                                            v['contentDetails'][
+                                                                                                'duration'],
+                                                                                            "PT2H2M")
+                                                                                    except ValueError:
+                                                                                        time = datetime.datetime.strptime(
+                                                                                            v['contentDetails'][
+                                                                                                'duration'],
+                                                                                            "PT%HH%SS")
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
@@ -186,15 +248,29 @@ with open('output.json') as json_data:
             header.append("+".join(v_topicCat).encode("ascii", "backslashreplace"))
             header.append("+".join(v_rel_topicids).encode("ascii", "backslashreplace"))
             header.append("+".join(v_tags).encode("ascii", "backslashreplace"))
-            header.append(float(comment_count)/len(sub['videos']))
-            header.append(float(view_count) / len(sub['videos']))
-            header.append(float(favorite_count) / len(sub['videos']))
-            header.append(float(like_count) / len(sub['videos']))
-            header.append(float(dislike_count) / len(sub['videos']))
-            header.append((total_duration / len(sub['videos'])).total_seconds())
-            header.append(float(total_title_length) / len(sub['videos']))
-            header.append(float(total_description_length) / len(sub['videos']))
-            header.append((total_posting_offset / len(sub['videos'])).total_seconds())
+
+            try:
+                header.append(float(comment_count)/len(sub['videos']))
+                header.append(float(view_count) / len(sub['videos']))
+                header.append(float(favorite_count) / len(sub['videos']))
+                header.append(float(like_count) / len(sub['videos']))
+                header.append(float(dislike_count) / len(sub['videos']))
+                header.append((total_duration / len(sub['videos'])).total_seconds())
+                header.append(float(total_title_length) / len(sub['videos']))
+                header.append(float(total_description_length) / len(sub['videos']))
+                header.append((total_posting_offset / len(sub['videos'])).total_seconds())
+            except ZeroDivisionError:
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+
+
 
             try:
                 defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
