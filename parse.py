@@ -303,7 +303,7 @@ with open('output.json') as json_data:
                 header.append(0.0)
 
 
-            if int(sub['statistics']['subscriberCount']) >= 300000:
+            if int(sub['statistics']['subscriberCount']) >= 250000:
                 header.append("yes")
             else:
                 header.append("no")
