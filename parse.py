@@ -303,7 +303,7 @@ with open('output.json') as json_data:
                 header.append(0.0)
 
 
-            if int(sub['statistics']['subscriberCount']) >= 100000:
+            if int(sub['statistics']['subscriberCount']) >= 500000:
                 header.append("yes")
             else:
                 header.append("no")
@@ -311,9 +311,16 @@ with open('output.json') as json_data:
 
 
 
-# #just checks to make sure all instances have same number of attributes
+# #count checker
+# count = 0
+# check = True
 # with open('data.csv', 'rb') as csvfile:
 #     reader = csv.reader(csvfile, delimiter =',')
 #     for row in reader:
-#         print len(row)
+#         if check:
+#             check = False
+#             continue
+#         if float(row[5]) >= 500000:
+#             count += 1
 #
+# #print count
