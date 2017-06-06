@@ -4,7 +4,7 @@ from sets import Set
 
 with open('output.json') as json_data:
     d = json.load(json_data, strict=False)
-    with open('data.csv', 'wb') as csvfile:
+    with open('data2.csv', 'wb') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
         header = []
         header.append("topicIds")
@@ -31,12 +31,23 @@ with open('output.json') as json_data:
         header.append("caption_ratio")
         header.append("licensed_content_ratio")
         header.append("3d/2d_ratio")
+        header.append("success")
         writer.writerow(header) #attribute names
 
         for sub in d: #iterating through channels
             header = []
-            header.append(sub['topicDetails']['topicIds'])
-            header.append(sub['topicDetails']['topicCategories'])
+
+
+            try:
+                header.append(sub['topicDetails']['topicIds'])
+            except KeyError:
+                header.append("none")
+
+            try:
+                header.append(sub['topicDetails']['topicCategories'])
+            except KeyError:
+                header.append("none")
+            #header.append(sub['topicDetails']['topicCategories'])
             header.append(sub['statistics']['commentCount'])
             header.append(sub['statistics']['viewCount'])
             header.append(sub['statistics']['videoCount'])
@@ -124,7 +135,13 @@ with open('output.json') as json_data:
                                 try:
                                     time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%SS")
                                 except ValueError:
-                                    time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
+                                    try:
+                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%MM")
+                                    except ValueError:
+                                        try:
+                                            time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
+                                        except ValueError:
+                                            time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH")
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
@@ -173,15 +190,29 @@ with open('output.json') as json_data:
             header.append("+".join(v_topicCat).encode("ascii", "backslashreplace"))
             header.append("+".join(v_rel_topicids).encode("ascii", "backslashreplace"))
             header.append("+".join(v_tags).encode("ascii", "backslashreplace"))
-            header.append(float(comment_count)/len(sub['videos']))
-            header.append(float(view_count) / len(sub['videos']))
-            header.append(float(favorite_count) / len(sub['videos']))
-            header.append(float(like_count) / len(sub['videos']))
-            header.append(float(dislike_count) / len(sub['videos']))
-            header.append((total_duration / len(sub['videos'])).total_seconds())
-            header.append(float(total_title_length) / len(sub['videos']))
-            header.append(float(total_description_length) / len(sub['videos']))
-            header.append((total_posting_offset / len(sub['videos'])).total_seconds())
+
+            try:
+                header.append(float(comment_count)/len(sub['videos']))
+                header.append(float(view_count) / len(sub['videos']))
+                header.append(float(favorite_count) / len(sub['videos']))
+                header.append(float(like_count) / len(sub['videos']))
+                header.append(float(dislike_count) / len(sub['videos']))
+                header.append((total_duration / len(sub['videos'])).total_seconds())
+                header.append(float(total_title_length) / len(sub['videos']))
+                header.append(float(total_description_length) / len(sub['videos']))
+                header.append((total_posting_offset / len(sub['videos'])).total_seconds())
+            except ZeroDivisionError:
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+                header.append(0.0)
+
+
 
             try:
                 defn_ratio = round(float(sd) / (hd + sd), ndigits=2)
@@ -213,13 +244,25 @@ with open('output.json') as json_data:
             except ZeroDivisionError:
                 header.append(0.0)
 
+
+            if int(sub['statistics']['subscriberCount']) >= 250000:
+                header.append("yes")
+            else:
+                header.append("no")
             writer.writerow(header)
 
 
 
-#just checks to make sure all instances have same number of attributes
-with open('data.csv', 'rb') as csvfile:
-    reader = csv.reader(csvfile, delimiter =',')
-    for row in reader:
-        print len(row)
-
+#count checker
+# count = 0
+# check = True
+# with open('data.csv', 'rb') as csvfile:
+#     reader = csv.reader(csvfile, delimiter =',')
+#     for row in reader:
+#         if check:
+#             check = False
+#             continue
+#         if float(row[5]) >= 300000:
+#             count += 1
+#
+# print count

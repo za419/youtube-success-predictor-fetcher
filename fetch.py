@@ -17,7 +17,7 @@ DEVELOPER_KEY = "AIzaSyDTjtlPmMX2vhAa4vfVon4Yh0ZfqCM7lsk"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
-def youtube_search(options):
+def youtube_search(options,token):
   youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
     developerKey=DEVELOPER_KEY)
 
@@ -27,6 +27,7 @@ def youtube_search(options):
     q=options.q,
     part="snippet",
     type="channel",
+    pageToken = token,
     maxResults=options.max_results
   ).execute()
 
@@ -35,7 +36,13 @@ def youtube_search(options):
   playlists = []
 
 
+
   # Add each result to the appropriate list
+  try:
+      nextpagetoken = search_response['nextPageToken']
+  except KeyError:
+      nextpagetoken = "null"
+  print nextpagetoken
   for search_result in search_response.get("items", []):
     if search_result["id"]["kind"] == "youtube#video":
       videos.append("%s" % (search_result["id"]["videoId"]))
@@ -65,23 +72,42 @@ def youtube_search(options):
         id=video["snippet"]["resourceId"]["videoId"]
       ).execute()["items"][0])
 
-  f = codecs.open(options.output, 'w', "utf-8")
+
+
+  f = codecs.open(options.output, 'a', "utf-8")
   output=json.dumps(channelObjects, f, indent=4, separators=(',', ' : '))
   # Change indents to tabs
   output=output.replace("    ", "\t")
   # Now write to the file
   f.write(output)
 
+  return nextpagetoken
+
 if __name__ == "__main__":
   argparser.add_argument("--q", help="Search term", default="let's play")
-  argparser.add_argument("--max-results", help="Max results", default=25)
+  argparser.add_argument("--max-results", help="Max results", default=20)
   argparser.add_argument("--output", help="Output filename", default="output.json")
   args = argparser.parse_args()
 
   UTF8Writer = codecs.getwriter('utf8')
   sys.stdout = UTF8Writer(sys.stdout)
 
-  try:
-    youtube_search(args)
-  except HttpError, e:
-    print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+  token = ""
+
+  # try:
+  #   token = youtube_search(args,token)
+  # except HttpError, e:
+  #   print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+
+  count = 0
+  while(True):
+    # count +=1
+    try:
+        token = youtube_search(args,token)
+    except HttpError, e:
+        print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+
+    if token == "null":
+        break
+    # if count == 3:
+    #     break
