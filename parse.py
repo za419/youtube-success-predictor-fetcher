@@ -136,70 +136,12 @@ with open('output.json') as json_data:
                                     time=datetime.datetime.strptime(v['contentDetails']['duration'], "PT%SS")
                                 except ValueError:
                                     try:
-                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT1H10M")
+                                        time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%MM")
                                     except ValueError:
                                         try:
-                                            time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                              "PT1H31M")
+                                            time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH%SS")
                                         except ValueError:
-                                            try:
-                                                time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                  "PT1H2M")
-                                            except ValueError:
-                                                try:
-                                                    time = datetime.datetime.strptime(v['contentDetails']['duration'],
-                                                                                      "PT1H34M")
-                                                except ValueError:
-                                                    try:
-                                                        time = datetime.datetime.strptime(
-                                                            v['contentDetails']['duration'],
-                                                            "PT1H22M")
-                                                    except ValueError:
-                                                        try:
-                                                            time = datetime.datetime.strptime(
-                                                                v['contentDetails']['duration'],
-                                                                "PT2H7M")
-                                                        except ValueError:
-                                                            try:
-                                                                time = datetime.datetime.strptime(
-                                                                    v['contentDetails']['duration'],
-                                                                    "PT5H14M")
-                                                            except ValueError:
-                                                                try:
-                                                                    time = datetime.datetime.strptime(
-                                                                        v['contentDetails']['duration'],
-                                                                        "PT2H12M")
-                                                                except ValueError:
-                                                                    try:
-                                                                        time = datetime.datetime.strptime(
-                                                                            v['contentDetails']['duration'],
-                                                                            "PT4H24M")
-                                                                    except ValueError:
-                                                                        try:
-                                                                            time = datetime.datetime.strptime(
-                                                                                v['contentDetails']['duration'],
-                                                                                "PT2H")
-                                                                        except ValueError:
-                                                                            try:
-                                                                                time = datetime.datetime.strptime(
-                                                                                    v['contentDetails']['duration'],
-                                                                                    "PT4H")
-                                                                            except ValueError:
-                                                                                try:
-                                                                                    time = datetime.datetime.strptime(
-                                                                                        v['contentDetails']['duration'],
-                                                                                        "PT3H8M")
-                                                                                except ValueError:
-                                                                                    try:
-                                                                                        time = datetime.datetime.strptime(
-                                                                                            v['contentDetails'][
-                                                                                                'duration'],
-                                                                                            "PT2H2M")
-                                                                                    except ValueError:
-                                                                                        time = datetime.datetime.strptime(
-                                                                                            v['contentDetails'][
-                                                                                                'duration'],
-                                                                                            "PT%HH%SS")
+                                            time = datetime.datetime.strptime(v['contentDetails']['duration'], "PT%HH")
                     total_duration += (time-datetime.datetime(time.year, time.month, time.day))
                 except KeyError:
                     continue
